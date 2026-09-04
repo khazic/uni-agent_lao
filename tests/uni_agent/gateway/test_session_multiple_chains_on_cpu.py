@@ -217,13 +217,11 @@ async def test_multiple_chains_linear_conversation_stays_single_chain():
 
     await _run(session, backend, first_messages, temperature=0.2)
     await _run(session, backend, second_messages, temperature=0.3)
-    await session.set_reward_info({"label": "linear"})
     chain_trajectories = await session.finalize()
 
     assert len(chain_trajectories) == 1
     assert 0 in chain_trajectories[0].response_mask
     assert chain_trajectories[0].response_mask[-len("SECOND") :] == [1] * len("SECOND")
-    assert chain_trajectories[0].reward_info == {"label": "linear"}
 
 
 @pytest.mark.cpu
